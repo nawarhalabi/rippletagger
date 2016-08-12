@@ -37,16 +37,8 @@ class Object:
         res += ")"
         return res
 
-def getWordTag(wordTag):
-    if wordTag == "///":
-        return "/", "/"
-    index = wordTag.rfind("/")
-    word = wordTag[:index].strip()
-    tag = wordTag[index + 1:].strip()
-    return word, tag
-
 def getObject(wordTags, index):#Sequence of "Word/Tag"
-    word, tag = getWordTag(wordTags[index])
+    word, tag = wordTags[index]
     preWord1 = preTag1 = preWord2 = preTag2 = ""
     nextWord1 = nextTag1 = nextWord2 = nextTag2 = ""
     suffixL2 = suffixL3 = suffixL4 = ""
@@ -59,13 +51,13 @@ def getObject(wordTags, index):#Sequence of "Word/Tag"
         suffixL4 = decodedW[-4:].encode("utf-8")
 
     if index > 0:
-        preWord1, preTag1 = getWordTag(wordTags[index - 1])
+        preWord1, preTag1 = wordTags[index - 1]
     if index > 1:
-        preWord2, preTag2 = getWordTag(wordTags[index - 2])
+        preWord2, preTag2 = wordTags[index - 2]
     if index < len(wordTags) - 1:
-        nextWord1, nextTag1 = getWordTag(wordTags[index + 1]) 
+        nextWord1, nextTag1 = wordTags[index + 1]
     if index < len(wordTags) - 2:
-        nextWord2, nextTag2 = getWordTag(wordTags[index + 2]) 
+        nextWord2, nextTag2 = wordTags[index + 2]
 
     return Object(word, tag, preWord2, preWord1, nextWord1, nextWord2, preTag2, preTag1, nextTag1, nextTag2, suffixL2, suffixL3, suffixL4)
 
@@ -94,8 +86,8 @@ def getObjectDictionary(initializedCorpus, goldStandardCorpus):
         goldWordTags = gold.replace("“", "''").replace("”", "''").replace("\"", "''").split()
 
         for k in xrange(len(initWordTags)):
-            initWord, initTag = getWordTag(initWordTags[k])
-            goldWord, correctTag = getWordTag(goldWordTags[k])
+            initWord, initTag = initWordTags[k]
+            goldWord, correctTag = goldWordTags[k]
 
             if initWord != goldWord:
                 print "\nERROR ==> Raw texts extracted from the gold standard corpus and the initialized corpus are not the same!"
@@ -133,7 +125,7 @@ class FWObject:
     @staticmethod
     def getFWObject(startWordTags, index):
         object = FWObject(True)
-        word, tag = getWordTag(startWordTags[index])
+        word, tag = startWordTags[index]
         object.context[4] = word
         object.context[5] = tag
 
@@ -145,22 +137,22 @@ class FWObject:
             object.context[12] = decodedW[-4:].encode("utf-8")
 
         if index > 0:
-            preWord1, preTag1 = getWordTag(startWordTags[index - 1])
+            preWord1, preTag1 = startWordTags[index - 1]
             object.context[2] = preWord1
             object.context[3] = preTag1
 
         if index > 1:
-            preWord2, preTag2 = getWordTag(startWordTags[index - 2])
+            preWord2, preTag2 = startWordTags[index - 2]
             object.context[0] = preWord2
             object.context[1] = preTag2
 
         if index < len(startWordTags) - 1:
-            nextWord1, nextTag1 = getWordTag(startWordTags[index + 1]) 
+            nextWord1, nextTag1 = startWordTags[index + 1]
             object.context[6] = nextWord1
             object.context[7] = nextTag1
 
         if index < len(startWordTags) - 2:
-            nextWord2, nextTag2 = getWordTag(startWordTags[index + 2])
+            nextWord2, nextTag2 = startWordTags[index + 2]
             object.context[8] = nextWord2
             object.context[9] = nextTag2
 

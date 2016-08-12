@@ -3,7 +3,7 @@
 from SCRDRlearner.SCRDRTree import SCRDRTree
 from tagger_initial import initializeSentence
 from SCRDRlearner.Object import FWObject
-from Utility.Utils import getRawText, readDictionary
+from Utility.Utils import readDictionary
 
 class RDRPOSTagger(SCRDRTree):
     def __init__(self, model_path):
@@ -23,8 +23,8 @@ class RDRPOSTagger(SCRDRTree):
 
         return sentence
 
-# r = RDRPOSTagger("Models/UniPOS/UD_French/train.UniPOS")
-# print r.tagRawSentence(u"Cette annonce a fait l' effet d' une véritable bombe .")
+r = RDRPOSTagger("Models/UniPOS/UD_French/train.UniPOS")
+print r.tagRawSentence(u"Cette annonce a fait l' effet d' une véritable bombe .")
 
 r = RDRPOSTagger("Models/UniPOS/UD_Swedish/train.UniPOS")
 print r.tagRawSentence(u"Fördomen har alltid sin rot i vardagslivet")
