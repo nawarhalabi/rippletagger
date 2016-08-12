@@ -6,6 +6,7 @@ VERSION = '0.1'
 setup(
     name='rippletagger',
     packages=["rippletagger"],
+    include_package_data=True,
     version=VERSION,
     description='RippleTagger identifies part-of-speech tags (NOUN, VERB...).',
     author=u'Emil Stenström',

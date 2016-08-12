@@ -1,17 +1,20 @@
 # -*- coding: utf-8 -*-
 
+import os
 import re
 
 from rippletagger.models import SCRDRTree, FeatureVector
+
+PACKAGE_PATH, _ = os.path.split(__file__)
 
 class Tagger(SCRDRTree):
     def __init__(self, language):
         mapper = LanguageMapper()
         directory_name = mapper.directory_name(language)
-        model_path = "Models/UD_%s/train.UniPOS" % directory_name
+        data_path = os.path.join(PACKAGE_PATH, "data", "UD_%s" % directory_name, "train.UniPOS")
 
-        self.tree_from_file(model_path + ".RDR")
-        self.word_to_tag_dict = self.dictionary_from_file(model_path + ".DICT")
+        self.tree_from_file(data_path + ".RDR")
+        self.word_to_tag_dict = self.dictionary_from_file(data_path + ".DICT")
 
     def tag(self, line):
         tagger = NaiveTagger(self.word_to_tag_dict)
@@ -80,7 +83,8 @@ class NaiveTagger:
 
 class LanguageMapper:
     def __init__(self):
-        with open("models/language_mapping.txt", "r") as f:
+        mapping_path = os.path.join(PACKAGE_PATH, "data", "language_mapping.txt")
+        with open(mapping_path, "r") as f:
             mapping_lines = [line.strip() for line in f.readlines()]
 
         language_twocode = {}

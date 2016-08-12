@@ -1,0 +1,2 @@
+include rippletagger/data/*
+include rippletagger/data/**/*
