@@ -11,7 +11,7 @@ setup(
     author=u'Emil Stenström',
     author_email='em@kth.se',
     url='https://github.com/EmilStenstrom/rippletagger/',
-    download_url='https://github.com/EmilStenstrom/rippletagger/tarball/' + VERSION,
+    download_url='https://github.com/EmilStenstrom/rippletagger/archive/%s.zip' % VERSION,
     install_requires=[],
     keywords=['pos-tagging', 'pos-tagger', 'multi-langauge', 'nlp', 'rippletagger'],
     classifiers=[
