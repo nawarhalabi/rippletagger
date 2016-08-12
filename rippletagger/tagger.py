@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from rippletagger.tagger_initial import initializeSentence
-from rippletagger.tree import SCRDRTree
-from rippletagger.feature import FeatureVector
+from rippletagger.models import SCRDRTree, FeatureVector
 from rippletagger.utils import readDictionary
 
 class Tagger(SCRDRTree):
