@@ -6,7 +6,8 @@ from learner.fwobject import FWObject
 from learner.utils import readDictionary
 
 class Tagger(SCRDRTree):
-    def __init__(self, model_path):
+    def __init__(self, langauge):
+        model_path = "Models/UniPOS/UD_%s/train.UniPOS" % langauge
         self.constructSCRDRtreeFromRDRfile(model_path + ".RDR")
         self.DICT = readDictionary(model_path + ".DICT")
 
@@ -23,8 +24,8 @@ class Tagger(SCRDRTree):
 
         return sentence
 
-r = Tagger("Models/UniPOS/UD_French/train.UniPOS")
+r = Tagger("French")
 print r.tag(u"Cette annonce a fait l' effet d' une véritable bombe .")
 
-r = Tagger("Models/UniPOS/UD_Swedish/train.UniPOS")
+r = Tagger("Swedish")
 print r.tag(u"Fördomen har alltid sin rot i vardagslivet")
