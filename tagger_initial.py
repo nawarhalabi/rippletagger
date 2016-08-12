@@ -9,7 +9,7 @@ def initializeSentence(FREQDICT, sentence):
         if word in ["“", "”", "\""]:
             taggedSen.append("''/" + FREQDICT["''"])
             continue
-        
+
         tag = ''
         decodedW = word.decode("utf-8")
         lowerW = decodedW.lower().encode("utf-8")
@@ -30,11 +30,11 @@ def initializeSentence(FREQDICT, sentence):
                     suffixL4 = ".*" + decodedW[-4:].encode("utf-8")
                 if wLength >= 6:
                     suffixL5 = ".*" + decodedW[-5:].encode("utf-8")
-                
+
                 if suffixL5 in FREQDICT:
                     tag = FREQDICT[suffixL5]
                 elif suffixL4 in FREQDICT:
-                    tag = FREQDICT[suffixL4] 
+                    tag = FREQDICT[suffixL4]
                 elif suffixL3 in FREQDICT:
                     tag = FREQDICT[suffixL3]
                 elif suffixL2 in FREQDICT:
@@ -43,14 +43,7 @@ def initializeSentence(FREQDICT, sentence):
                     tag = FREQDICT["TAG4UNKN-CAPITAL"]
                 else:
                     tag = FREQDICT["TAG4UNKN-WORD"]
-           
-        taggedSen.append(word + "/" + tag)                                
-    
-    return " ".join(taggedSen)
 
-def initializeCorpus(FREQDICT, inputFile, outputFile):
-    lines = open(inputFile, "r").readlines()
-    fileOut = open(outputFile, "w")
-    for line in lines:
-        fileOut.write(initializeSentence(FREQDICT, line) + "\n")
-    fileOut.close()
+        taggedSen.append((word, tag))
+
+    return taggedSen
