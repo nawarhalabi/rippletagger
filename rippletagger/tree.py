@@ -12,24 +12,6 @@ class SCRDRTree:
     def __init__(self, root=None):
         self.root = root
 
-    def findDepthNode(self, node, depth):
-        while node.depth != depth:
-            node = node.father
-        return node
-
-    def classify(self, object):
-        self.root.check(object)
-
-    def writeToFileWithSeenCases(self, outFile):
-        out = open(outFile, "w", encoding="utf-8")
-        self.root.writeToFileWithSeenCases(out, 0)
-        out.close()
-
-    def writeToFile(self, outFile):
-        out = open(outFile, "w", encoding="utf-8")
-        self.root.writeToFile(out, 0)
-        out.close()
-
     # Build tree from file containing rules using FWObject
     def constructSCRDRtreeFromRDRfile(self, rulesFilePath):
 
