@@ -2,7 +2,7 @@
 
 from codecs import open
 from node import Node
-from fwobject import FWObject
+from feature import FeatureVector
 
 class SCRDRTree:
     """
@@ -12,10 +12,9 @@ class SCRDRTree:
     def __init__(self, root=None):
         self.root = root
 
-    # Build tree from file containing rules using FWObject
+    # Build tree from file containing rules using FeatureVector
     def constructSCRDRtreeFromRDRfile(self, rulesFilePath):
-
-        self.root = Node(FWObject(False), "NN", None, None, None, [], 0)
+        self.root = Node(FeatureVector(False), "NN", None, None, None, [], 0)
         currentNode = self.root
         currentDepth = 0
 
@@ -57,10 +56,10 @@ class SCRDRTree:
             currentNode = node
             currentDepth = depth
 
-    def findFiredNode(self, fwObject):
+    def findFiredNode(self, feature):
         currentNode = self.root
         firedNode = None
-        obContext = fwObject.context
+        obContext = feature.context
         while True:
             # Check whether object satisfying the current node's condition
             cnContext = currentNode.condition.context
@@ -97,7 +96,7 @@ def getConcreteValue(str):
     return str[str.find("\"") + 1: len(str) - 1]
 
 def getCondition(strCondition):
-    condition = FWObject(False)
+    condition = FeatureVector(False)
     for rule in strCondition.split(" and "):
         rule = rule.strip()
         key = rule[rule.find(".") + 1: rule.find(" ")]

@@ -2,7 +2,7 @@
 
 from rippletagger.tagger_initial import initializeSentence
 from rippletagger.tree import SCRDRTree
-from rippletagger.fwobject import FWObject
+from rippletagger.feature import FeatureVector
 from rippletagger.utils import readDictionary
 
 class Tagger(SCRDRTree):
@@ -19,9 +19,9 @@ class Tagger(SCRDRTree):
         sentence = []
 
         for i, guessed_tag in enumerate(guessed_tags):
-            fwObject = FWObject.getFWObject(guessed_tags, i)
+            feature = FeatureVector.getFeatureVector(guessed_tags, i)
             word, tag = guessed_tag
-            node = self.findFiredNode(fwObject)
+            node = self.findFiredNode(feature)
 
             sentence.append((word, node.conclusion if node.depth > 0 else tag))
 
