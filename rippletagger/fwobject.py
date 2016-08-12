@@ -6,15 +6,15 @@ class FWObject:
     RDRPOSTaggerV1.2: add suffixes
     """
 
-    def __init__(self, check = False):
+    def __init__(self, check=False):
         self.context = [None, None, None, None, None, None, None, None, None, None, None, None, None]
-        if(check == True):
+        if check:
             i = 0
             while (i < 10):
                 self.context[i] = "<W>"
                 self.context[i + 1] = "<T>"
                 i = i + 2
-            self.context[10] = "<SFX>"# suffix
+            self.context[10] = "<SFX>"  # suffix
             self.context[11] = "<SFX>"
             self.context[12] = "<SFX>"
 

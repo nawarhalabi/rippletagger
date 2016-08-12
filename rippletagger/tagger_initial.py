@@ -18,7 +18,7 @@ def initializeSentence(FREQDICT, sentence):
         elif lowerW in FREQDICT:
             tag = FREQDICT[lowerW]
         else:
-            if re.search(r"[0-9]+", word) != None:
+            if re.search(r"[0-9]+", word) is not None:
                 tag = FREQDICT["TAG4UNKN-NUM"]
             else:
                 suffixL2 = suffixL3 = suffixL4 = suffixL5 = None

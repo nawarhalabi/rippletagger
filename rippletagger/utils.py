@@ -9,4 +9,3 @@ def readDictionary(inputFile):
         wordtag = line.strip().split()
         dictionary[wordtag[0]] = wordtag[1]
     return dictionary
-

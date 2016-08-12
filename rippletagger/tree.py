@@ -9,7 +9,7 @@ class SCRDRTree:
     Single Classification Ripple Down Rules tree for Part-of-Speech and morphological tagging
     """
 
-    def __init__(self, root = None):
+    def __init__(self, root=None):
         self.root = root
 
     def findDepthNode(self, node, depth):
@@ -30,7 +30,7 @@ class SCRDRTree:
         self.root.writeToFile(out, 0)
         out.close()
 
-    #Build tree from file containing rules using FWObject
+    # Build tree from file containing rules using FWObject
     def constructSCRDRtreeFromRDRfile(self, rulesFilePath):
 
         self.root = Node(FWObject(False), "NN", None, None, None, [], 0)
@@ -80,7 +80,7 @@ class SCRDRTree:
         firedNode = None
         obContext = fwObject.context
         while True:
-            #Check whether object satisfying the current node's condition
+            # Check whether object satisfying the current node's condition
             cnContext = currentNode.condition.context
             satisfied = True
             for i in xrange(13):
@@ -112,13 +112,13 @@ def getConcreteValue(str):
             return "<SFX>"
         else:
             return "<T>"
-    return str[str.find("\"") + 1 : len(str) - 1]
+    return str[str.find("\"") + 1: len(str) - 1]
 
 def getCondition(strCondition):
     condition = FWObject(False)
     for rule in strCondition.split(" and "):
         rule = rule.strip()
-        key = rule[rule.find(".") + 1 : rule.find(" ")]
+        key = rule[rule.find(".") + 1: rule.find(" ")]
         value = getConcreteValue(rule)
 
         if key == "prevWord2":
