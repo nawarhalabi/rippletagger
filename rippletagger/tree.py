@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from codecs import open
 from node import Node
 from fwobject import FWObject
 
@@ -20,12 +21,12 @@ class SCRDRTree:
         self.root.check(object)
 
     def writeToFileWithSeenCases(self, outFile):
-        out = open(outFile, "w")
+        out = open(outFile, "w", encoding="utf-8")
         self.root.writeToFileWithSeenCases(out, 0)
         out.close()
 
     def writeToFile(self, outFile):
-        out = open(outFile, "w")
+        out = open(outFile, "w", encoding="utf-8")
         self.root.writeToFile(out, 0)
         out.close()
 
@@ -36,7 +37,7 @@ class SCRDRTree:
         currentNode = self.root
         currentDepth = 0
 
-        rulesFile = open(rulesFilePath, "r")
+        rulesFile = open(rulesFilePath, "r", encoding="utf-8")
         lines = rulesFile.readlines()
 
         for i in xrange(1, len(lines)):

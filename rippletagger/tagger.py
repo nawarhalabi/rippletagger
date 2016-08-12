@@ -15,7 +15,7 @@ class Tagger(SCRDRTree):
         self.DICT = readDictionary(model_path + ".DICT")
 
     def tag(self, line):
-        guessed_tags = initializeSentence(self.DICT, line.encode("utf-8"))
+        guessed_tags = initializeSentence(self.DICT, line)
         sentence = []
 
         for i, guessed_tag in enumerate(guessed_tags):

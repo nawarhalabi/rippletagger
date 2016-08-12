@@ -25,12 +25,12 @@ class FWObject:
         object.context[4] = word
         object.context[5] = tag
 
-        decodedW = word.decode("utf-8")
+        decodedW = word
         if len(decodedW) >= 4:
-            object.context[10] = decodedW[-2:].encode("utf-8")
-            object.context[11] = decodedW[-3:].encode("utf-8")
+            object.context[10] = decodedW[-2:]
+            object.context[11] = decodedW[-3:]
         if len(decodedW) >= 5:
-            object.context[12] = decodedW[-4:].encode("utf-8")
+            object.context[12] = decodedW[-4:]
 
         if index > 0:
             preWord1, preTag1 = startWordTags[index - 1]
