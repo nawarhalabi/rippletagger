@@ -38,8 +38,8 @@ class SCRDRTree:
             if temp == 0:
                 continue
 
-            condition = getCondition(line.split(" : ", 1)[0].strip())
-            conclusion = getConcreteValue(line.split(" : ", 1)[1].strip())
+            condition = self.getCondition(line.split(" : ", 1)[0].strip())
+            conclusion = self.getConcreteValue(line.split(" : ", 1)[1].strip())
 
             node = Node(condition, conclusion, None, None, None, [], depth)
 
@@ -85,48 +85,48 @@ class SCRDRTree:
                     currentNode = elChild
         return firedNode
 
-def getConcreteValue(str):
-    if str.find('""') > 0:
-        if str.find("Word") > 0:
-            return "<W>"
-        elif str.find("suffixL") > 0:
-            return "<SFX>"
-        else:
-            return "<T>"
-    return str[str.find("\"") + 1: len(str) - 1]
+    def getConcreteValue(self, str):
+        if str.find('""') > 0:
+            if str.find("Word") > 0:
+                return "<W>"
+            elif str.find("suffixL") > 0:
+                return "<SFX>"
+            else:
+                return "<T>"
+        return str[str.find("\"") + 1: len(str) - 1]
 
-def getCondition(strCondition):
-    condition = FeatureVector(False)
-    for rule in strCondition.split(" and "):
-        rule = rule.strip()
-        key = rule[rule.find(".") + 1: rule.find(" ")]
-        value = getConcreteValue(rule)
+    def getCondition(self, strCondition):
+        condition = FeatureVector(False)
+        for rule in strCondition.split(" and "):
+            rule = rule.strip()
+            key = rule[rule.find(".") + 1: rule.find(" ")]
+            value = self.getConcreteValue(rule)
 
-        if key == "prevWord2":
-            condition.context[0] = value
-        elif key == "prevTag2":
-            condition.context[1] = value
-        elif key == "prevWord1":
-            condition.context[2] = value
-        elif key == "prevTag1":
-            condition.context[3] = value
-        elif key == "word":
-            condition.context[4] = value
-        elif key == "tag":
-            condition.context[5] = value
-        elif key == "nextWord1":
-            condition.context[6] = value
-        elif key == "nextTag1":
-            condition.context[7] = value
-        elif key == "nextWord2":
-            condition.context[8] = value
-        elif key == "nextTag2":
-            condition.context[9] = value
-        elif key == "suffixL2":
-            condition.context[10] = value
-        elif key == "suffixL3":
-            condition.context[11] = value
-        elif key == "suffixL4":
-            condition.context[12] = value
+            if key == "prevWord2":
+                condition.context[0] = value
+            elif key == "prevTag2":
+                condition.context[1] = value
+            elif key == "prevWord1":
+                condition.context[2] = value
+            elif key == "prevTag1":
+                condition.context[3] = value
+            elif key == "word":
+                condition.context[4] = value
+            elif key == "tag":
+                condition.context[5] = value
+            elif key == "nextWord1":
+                condition.context[6] = value
+            elif key == "nextTag1":
+                condition.context[7] = value
+            elif key == "nextWord2":
+                condition.context[8] = value
+            elif key == "nextTag2":
+                condition.context[9] = value
+            elif key == "suffixL2":
+                condition.context[10] = value
+            elif key == "suffixL3":
+                condition.context[11] = value
+            elif key == "suffixL4":
+                condition.context[12] = value
 
-    return condition
+        return condition
