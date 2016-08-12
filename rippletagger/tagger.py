@@ -61,3 +61,6 @@ class LanguageMapper:
             "Language '%s' not found. See models/language_mapping.txt"
             " for valid language codes" % code_or_name
         )
+
+    def all_language_codes(self):
+        return self.language_threecode.keys()
