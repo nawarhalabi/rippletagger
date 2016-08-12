@@ -7,7 +7,7 @@ class Node:
 
     def __init__(
         self,
-        condition,
+        feature,
         conclusion,
         father=None,
         exceptChild=None,
@@ -15,7 +15,7 @@ class Node:
         cornerstoneCases=[],
         depth=0,
     ):
-        self.condition = condition
+        self.feature = feature
         self.conclusion = conclusion
         self.exceptChild = exceptChild
         self.elseChild = elseChild
@@ -110,10 +110,10 @@ class SCRDRTree:
             if temp == 0:
                 continue
 
-            condition = self.getCondition(line.split(" : ", 1)[0].strip())
+            feature = self.getFeature(line.split(" : ", 1)[0].strip())
             conclusion = self.getConcreteValue(line.split(" : ", 1)[1].strip())
 
-            node = Node(condition, conclusion, None, None, None, [], depth)
+            node = Node(feature, conclusion, None, None, None, [], depth)
 
             if depth > currentDepth:
                 currentNode.exceptChild = node
@@ -133,8 +133,8 @@ class SCRDRTree:
         firedNode = None
         obContext = feature.context
         while True:
-            # Check whether object satisfying the current node's condition
-            cnContext = currentNode.condition.context
+            # Check whether object satisfying the current node's feature
+            cnContext = currentNode.feature.context
             satisfied = True
             for i in xrange(13):
                 if (cnContext[i] is not None):
@@ -167,38 +167,38 @@ class SCRDRTree:
                 return "<T>"
         return str[str.find("\"") + 1: len(str) - 1]
 
-    def getCondition(self, strCondition):
-        condition = FeatureVector(False)
-        for rule in strCondition.split(" and "):
+    def getFeature(self, condition):
+        feature = FeatureVector(False)
+        for rule in condition.split(" and "):
             rule = rule.strip()
             key = rule[rule.find(".") + 1: rule.find(" ")]
             value = self.getConcreteValue(rule)
 
             if key == "prevWord2":
-                condition.context[0] = value
+                feature.context[0] = value
             elif key == "prevTag2":
-                condition.context[1] = value
+                feature.context[1] = value
             elif key == "prevWord1":
-                condition.context[2] = value
+                feature.context[2] = value
             elif key == "prevTag1":
-                condition.context[3] = value
+                feature.context[3] = value
             elif key == "word":
-                condition.context[4] = value
+                feature.context[4] = value
             elif key == "tag":
-                condition.context[5] = value
+                feature.context[5] = value
             elif key == "nextWord1":
-                condition.context[6] = value
+                feature.context[6] = value
             elif key == "nextTag1":
-                condition.context[7] = value
+                feature.context[7] = value
             elif key == "nextWord2":
-                condition.context[8] = value
+                feature.context[8] = value
             elif key == "nextTag2":
-                condition.context[9] = value
+                feature.context[9] = value
             elif key == "suffixL2":
-                condition.context[10] = value
+                feature.context[10] = value
             elif key == "suffixL3":
-                condition.context[11] = value
+                feature.context[11] = value
             elif key == "suffixL4":
-                condition.context[12] = value
+                feature.context[12] = value
 
-        return condition
+        return feature
