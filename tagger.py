@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from SCRDRlearner.SCRDRTree import SCRDRTree
-from SCRDRlearner.Object import FWObject
 from learner.tagger_initial import initializeSentence
+from learner.tree import SCRDRTree
+from learner.fwobject import FWObject
 from learner.utils import readDictionary
 
 class RDRPOSTagger(SCRDRTree):
