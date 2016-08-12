@@ -1,6 +1,6 @@
 # RippleTagger
 
-**RippleTagger** identifies part-of-speech tags (NOUN, VERB...). You give it a sentence, it gives you a list of tags back. Tagging is the first step in many language processing tasks.
+**RippleTagger** identifies part-of-speech tags (Nouns, Verbs, and so on...). You give it a sentence, it gives you a list of tags back. Tagging is the first step in many language processing tasks.
 
 ## Example usage
 
