@@ -7,7 +7,7 @@ from rippletagger.utils import readDictionary
 
 class Tagger(SCRDRTree):
     def __init__(self, langauge):
-        model_path = "Models/UniPOS/UD_%s/train.UniPOS" % langauge
+        model_path = "Models/UD_%s/train.UniPOS" % langauge
         self.constructSCRDRtreeFromRDRfile(model_path + ".RDR")
         self.DICT = readDictionary(model_path + ".DICT")
 
