@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from learner.tagger_initial import initializeSentence
-from learner.tree import SCRDRTree
-from learner.fwobject import FWObject
-from learner.utils import readDictionary
+from rippletagger.tagger_initial import initializeSentence
+from rippletagger.tree import SCRDRTree
+from rippletagger.fwobject import FWObject
+from rippletagger.utils import readDictionary
 
 class Tagger(SCRDRTree):
     def __init__(self, langauge):
