@@ -6,9 +6,9 @@ from rippletagger.fwobject import FWObject
 from rippletagger.utils import readDictionary
 
 class Tagger(SCRDRTree):
-    def __init__(self, code_or_name):
+    def __init__(self, language):
         mapper = LanguageMapper()
-        directory_name = mapper.directory_name(code_or_name)
+        directory_name = mapper.directory_name(language)
         model_path = "Models/UD_%s/train.UniPOS" % directory_name
 
         self.constructSCRDRtreeFromRDRfile(model_path + ".RDR")
