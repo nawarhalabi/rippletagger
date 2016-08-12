@@ -10,16 +10,16 @@ class Node:
         feature,
         tag,
         father=None,
-        exceptChild=None,
-        elseChild=None,
-        cornerstoneCases=[],
+        except_child=None,
+        else_child=None,
+        cornerstone_cases=[],
         depth=0,
     ):
         self.feature = feature
         self.tag = tag
-        self.exceptChild = exceptChild
-        self.elseChild = elseChild
-        self.cornerstoneCases = cornerstoneCases
+        self.except_child = except_child
+        self.else_child = else_child
+        self.cornerstone_cases = cornerstone_cases
         self.father = father
         self.depth = depth
 
@@ -63,8 +63,8 @@ class FeatureVector:
     def set_key(self, key, value):
         self.__dict__[key] = value
 
-    @staticmethod
-    def getFeatureVector(tagged_sentence, index):
+    @classmethod
+    def build(cls, tagged_sentence, index):
         feature = FeatureVector(True)
         word, tag = tagged_sentence[index]
         feature.word = word
@@ -100,13 +100,13 @@ class SCRDRTree:
         self.root = root
 
     # Build tree from file containing rules using FeatureVector
-    def constructSCRDRtreeFromRDRfile(self, rulesFilePath):
+    def tree_from_file(self, rules_file_path):
         self.root = Node(FeatureVector(False), "NN", None, None, None, [], 0)
-        currentNode = self.root
-        currentDepth = 0
+        current_node = self.root
+        current_depth = 0
 
-        rulesFile = open(rulesFilePath, "r", encoding="utf-8")
-        lines = rulesFile.readlines()
+        rules_file = open(rules_file_path, "r", encoding="utf-8")
+        lines = rules_file.readlines()
 
         for i in xrange(1, len(lines)):
             line = lines[i]
@@ -126,62 +126,79 @@ class SCRDRTree:
                 continue
 
             condition, conclusion = line.split(" : ", 1)
-            feature = self.getFeature(condition.strip())
-            tag = self.getTag(conclusion.strip())
+            feature = self.parse_feature(condition)
+            tag = self.parse_tag(conclusion)
 
             node = Node(feature, tag, None, None, None, [], depth)
 
-            if depth > currentDepth:
-                currentNode.exceptChild = node
-            elif depth == currentDepth:
-                currentNode.elseChild = node
+            if depth > current_depth:
+                current_node.except_child = node
+            elif depth == current_depth:
+                current_node.else_child = node
             else:
-                while currentNode.depth != depth:
-                    currentNode = currentNode.father
-                currentNode.elseChild = node
+                while current_node.depth != depth:
+                    current_node = current_node.father
+                current_node.else_child = node
 
-            node.father = currentNode
-            currentNode = node
-            currentDepth = depth
+            node.father = current_node
+            current_node = node
+            current_depth = depth
 
-    def findFiredNode(self, feature):
-        currentNode = self.root
-        firedNode = None
+    def dictionary_from_file(self, dictionary_file_path):
+        with open(dictionary_file_path, "r", encoding="utf-8") as f:
+            lines = f.readlines()
+
+        dictionary = {}
+        for line in lines:
+            wordtag = line.strip().split()
+            dictionary[wordtag[0]] = wordtag[1]
+
+        return dictionary
+
+    def find_fired_node(self, feature):
+        current_node = self.root
+        fired_node = None
         while True:
             # Check whether object satisfying the current node's feature
-            satisfied = feature.matches(currentNode.feature)
+            satisfied = feature.matches(current_node.feature)
 
             if satisfied:
-                firedNode = currentNode
-                exChild = currentNode.exceptChild
-                if exChild is None:
+                fired_node = current_node
+                except_child = current_node.except_child
+                if except_child is None:
                     break
                 else:
-                    currentNode = exChild
+                    current_node = except_child
             else:
-                elChild = currentNode.elseChild
-                if elChild is None:
+                else_child = current_node.else_child
+                if else_child is None:
                     break
                 else:
-                    currentNode = elChild
-        return firedNode
+                    current_node = else_child
 
-    def getTag(self, str):
-        if str.find('""') > 0:
-            if str.find("Word") > 0:
-                return "<W>"
-            elif str.find("suffixL") > 0:
-                return "<SFX>"
-            else:
-                return "<T>"
-        return str[str.find("\"") + 1: len(str) - 1]
+        return fired_node
 
-    def getFeature(self, condition):
+    def parse_feature(self, condition):
+        condition = condition.strip()
+
         feature = FeatureVector(False)
         for rule in condition.split(" and "):
             rule = rule.strip()
             key = rule[rule.find(".") + 1: rule.find(" ")]
-            value = self.getTag(rule)
+            value = self.parse_tag(rule)
             feature.set_key(key, value)
 
         return feature
+
+    def parse_tag(self, conclusion):
+        conclusion = conclusion.strip()
+
+        if conclusion.find('""') > 0:
+            if conclusion.find("Word") > 0:
+                return "<W>"
+            elif conclusion.find("suffixL") > 0:
+                return "<SFX>"
+            else:
+                return "<T>"
+
+        return conclusion[conclusion.find("\"") + 1: len(conclusion) - 1]

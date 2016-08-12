@@ -3,7 +3,6 @@
 import re
 
 from rippletagger.models import SCRDRTree, FeatureVector
-from rippletagger.utils import readDictionary
 
 class Tagger(SCRDRTree):
     def __init__(self, language):
@@ -11,70 +10,73 @@ class Tagger(SCRDRTree):
         directory_name = mapper.directory_name(language)
         model_path = "Models/UD_%s/train.UniPOS" % directory_name
 
-        self.constructSCRDRtreeFromRDRfile(model_path + ".RDR")
-        self.DICT = readDictionary(model_path + ".DICT")
+        self.tree_from_file(model_path + ".RDR")
+        self.word_to_tag_dict = self.dictionary_from_file(model_path + ".DICT")
 
     def tag(self, line):
-        tagger = FrequencyTagger(self.DICT)
+        tagger = NaiveTagger(self.word_to_tag_dict)
         tagged_sentence_initial = tagger.tag(line)
+
         tagged_sentence = []
 
         for i, (word, tag) in enumerate(tagged_sentence_initial):
-            feature = FeatureVector.getFeatureVector(tagged_sentence_initial, i)
-            node = self.findFiredNode(feature)
+            feature = FeatureVector.build(tagged_sentence_initial, i)
+            node = self.find_fired_node(feature)
             tagged_sentence.append((word, node.tag if node.depth > 0 else tag))
 
         return tagged_sentence
 
-class FrequencyTagger:
-    def __init__(self, FREQDICT):
-        self.FREQDICT = FREQDICT
+class NaiveTagger:
+    def __init__(self, word_to_tag_dict):
+        self.word_to_tag_dict = word_to_tag_dict
 
     def tag(self, line):
         words = line.strip().split()
-        taggedSen = []
+        tagged_sentence = []
         for word in words:
             if word in [u"“", u"”", u"\""]:
-                taggedSen.append("''/" + self.FREQDICT["''"])
+                tagged_sentence.append(("''", self.word_to_tag_dict["''"]))
                 continue
 
             tag = ''
-            decodedW = word
-            lowerW = decodedW.lower()
-            if word in self.FREQDICT:
-                tag = self.FREQDICT[word]
-            elif lowerW in self.FREQDICT:
-                tag = self.FREQDICT[lowerW]
+
+            if word in self.word_to_tag_dict:
+                tag = self.word_to_tag_dict[word]
+
+            elif word.lower() in self.word_to_tag_dict:
+                tag = self.word_to_tag_dict[word.lower()]
+
             else:
                 if re.search(r"[0-9]+", word) is not None:
-                    tag = self.FREQDICT["TAG4UNKN-NUM"]
+                    tag = self.word_to_tag_dict["TAG4UNKN-NUM"]
+
                 else:
-                    suffixL2 = suffixL3 = suffixL4 = suffixL5 = None
-                    wLength = len(decodedW)
-                    if wLength >= 4:
-                        suffixL3 = ".*" + decodedW[-3:]
-                        suffixL2 = ".*" + decodedW[-2:]
-                    if wLength >= 5:
-                        suffixL4 = ".*" + decodedW[-4:]
-                    if wLength >= 6:
-                        suffixL5 = ".*" + decodedW[-5:]
+                    suffix_l2 = suffix_l3 = suffix_l4 = suffix_l5 = None
+                    word_len = len(word)
+                    if word_len >= 4:
+                        suffix_l3 = ".*" + word[-3:]
+                        suffix_l2 = ".*" + word[-2:]
+                    if word_len >= 5:
+                        suffix_l4 = ".*" + word[-4:]
+                    if word_len >= 6:
+                        suffix_l5 = ".*" + word[-5:]
 
-                    if suffixL5 in self.FREQDICT:
-                        tag = self.FREQDICT[suffixL5]
-                    elif suffixL4 in self.FREQDICT:
-                        tag = self.FREQDICT[suffixL4]
-                    elif suffixL3 in self.FREQDICT:
-                        tag = self.FREQDICT[suffixL3]
-                    elif suffixL2 in self.FREQDICT:
-                        tag = self.FREQDICT[suffixL2]
-                    elif decodedW[0].isupper():
-                        tag = self.FREQDICT["TAG4UNKN-CAPITAL"]
+                    if suffix_l5 in self.word_to_tag_dict:
+                        tag = self.word_to_tag_dict[suffix_l5]
+                    elif suffix_l4 in self.word_to_tag_dict:
+                        tag = self.word_to_tag_dict[suffix_l4]
+                    elif suffix_l3 in self.word_to_tag_dict:
+                        tag = self.word_to_tag_dict[suffix_l3]
+                    elif suffix_l2 in self.word_to_tag_dict:
+                        tag = self.word_to_tag_dict[suffix_l2]
+                    elif word[0].isupper():
+                        tag = self.word_to_tag_dict["TAG4UNKN-CAPITAL"]
                     else:
-                        tag = self.FREQDICT["TAG4UNKN-WORD"]
+                        tag = self.word_to_tag_dict["TAG4UNKN-WORD"]
 
-            taggedSen.append((word, tag))
+            tagged_sentence.append((word, tag))
 
-        return taggedSen
+        return tagged_sentence
 
 class LanguageMapper:
     def __init__(self):
