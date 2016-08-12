@@ -4,8 +4,14 @@ class Node:
     """
 
     def __init__(
-        self, condition, conclusion, father=None, exceptChild=None,
-        elseChild=None, cornerstoneCases=[], depth=0
+        self,
+        condition,
+        conclusion,
+        father=None,
+        exceptChild=None,
+        elseChild=None,
+        cornerstoneCases=[],
+        depth=0,
     ):
         self.condition = condition
         self.conclusion = conclusion
