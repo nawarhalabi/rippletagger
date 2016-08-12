@@ -8,7 +8,7 @@ class Node:
     def __init__(
         self,
         feature,
-        conclusion,
+        tag,
         father=None,
         exceptChild=None,
         elseChild=None,
@@ -16,7 +16,7 @@ class Node:
         depth=0,
     ):
         self.feature = feature
-        self.conclusion = conclusion
+        self.tag = tag
         self.exceptChild = exceptChild
         self.elseChild = elseChild
         self.cornerstoneCases = cornerstoneCases
@@ -125,10 +125,11 @@ class SCRDRTree:
             if temp == 0:
                 continue
 
-            feature = self.getFeature(line.split(" : ", 1)[0].strip())
-            conclusion = self.getConcreteValue(line.split(" : ", 1)[1].strip())
+            condition, conclusion = line.split(" : ", 1)
+            feature = self.getFeature(condition.strip())
+            tag = self.getTag(conclusion.strip())
 
-            node = Node(feature, conclusion, None, None, None, [], depth)
+            node = Node(feature, tag, None, None, None, [], depth)
 
             if depth > currentDepth:
                 currentNode.exceptChild = node
@@ -165,7 +166,7 @@ class SCRDRTree:
                     currentNode = elChild
         return firedNode
 
-    def getConcreteValue(self, str):
+    def getTag(self, str):
         if str.find('""') > 0:
             if str.find("Word") > 0:
                 return "<W>"
@@ -180,7 +181,7 @@ class SCRDRTree:
         for rule in condition.split(" and "):
             rule = rule.strip()
             key = rule[rule.find(".") + 1: rule.find(" ")]
-            value = self.getConcreteValue(rule)
+            value = self.getTag(rule)
             feature.set_key(key, value)
 
         return feature
