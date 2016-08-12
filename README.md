@@ -20,6 +20,12 @@
 
 - It supports 40 (!) languages out of the box.
 
+## Installation
+
+```bash
+pip install rippletagger
+```
+
 ## Supported languages
 
 You can use either the 2-letter code, 3-letter code or language name as the parameter to Tagger.
