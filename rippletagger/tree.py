@@ -103,43 +103,6 @@ class SCRDRTree:
                     currentNode = elChild
         return firedNode
 
-#    def findFiredNodeInDepth(self, fwObject, depth):
-#        currentNode = self.root
-#        firedNode = None
-#        while True:
-#            if(currentNode.condition.isSatisfied(fwObject)):
-#                firedNode = currentNode
-#                if currentNode.exceptChild is None:
-#                    break
-#                else:
-#                    currentNode = currentNode.exceptChild
-#            else:
-#                if currentNode.elseChild is None:
-#                    break
-#                else:
-#                    currentNode = currentNode.elseChild
-#            if currentNode.depth > depth:
-#                break
-#        return firedNode
-#
-#    #Count number of nodes in exception-structure levels
-#    def countNodes(self, inDepth):
-#        currentNode = self.root
-#        nodeQueue = []
-#        nodeQueue.append(currentNode)
-#        count = 0
-#        while len(nodeQueue) > 0:
-#            currentNode = nodeQueue[0]
-#            #Current node's depth is smaller than a given threshold
-#            if currentNode.depth <= inDepth:
-#                count += 1
-#            if currentNode.exceptChild is not None:
-#                nodeQueue.append(currentNode.exceptChild)
-#            if currentNode.elseChild is not None:
-#                nodeQueue.append(currentNode.elseChild)
-#            nodeQueue = nodeQueue[1:]
-#        return count
-
 def getConcreteValue(str):
     if str.find('""') > 0:
         if str.find("Word") > 0:
@@ -185,6 +148,3 @@ def getCondition(strCondition):
             condition.context[12] = value
 
     return condition
-
-if __name__ == "__main__":
-    pass
