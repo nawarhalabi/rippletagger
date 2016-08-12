@@ -28,51 +28,66 @@ class FeatureVector:
     A feature vector with features representing the context around a word
     """
 
-    def __init__(self, check=False):
-        self.context = [None, None, None, None, None, None, None, None, None, None, None, None, None]
-        if check:
-            i = 0
-            while (i < 10):
-                self.context[i] = "<W>"
-                self.context[i + 1] = "<T>"
-                i = i + 2
-            self.context[10] = "<SFX>"  # suffix
-            self.context[11] = "<SFX>"
-            self.context[12] = "<SFX>"
+    def __init__(self, initialize=False):
+        self.prevWord2 = "<W>" if initialize else None   # 0
+        self.prevTag2 = "<T>" if initialize else None    # 1
+        self.prevWord1 = "<W>" if initialize else None   # 2
+        self.prevTag1 = "<T>" if initialize else None    # 3
+        self.word = "<W>" if initialize else None        # 4
+        self.tag = "<T>" if initialize else None         # 5
+        self.nextWord1 = "<W>" if initialize else None   # 6
+        self.nextTag1 = "<T>" if initialize else None    # 7
+        self.nextWord2 = "<W>" if initialize else None   # 8
+        self.nextTag2 = "<T>" if initialize else None    # 9
+        self.suffixL2 = "<SFX>" if initialize else None  # 10
+        self.suffixL3 = "<SFX>" if initialize else None  # 11
+        self.suffixL4 = "<SFX>" if initialize else None  # 12
+
+    def matches(self, other):
+        return (
+            (other.prevWord2 is None or self.prevWord2 == other.prevWord2) and
+            (other.prevTag2 is None or self.prevTag2 == other.prevTag2) and
+            (other.prevWord1 is None or self.prevWord1 == other.prevWord1) and
+            (other.prevTag1 is None or self.prevTag1 == other.prevTag1) and
+            (other.word is None or self.word == other.word) and
+            (other.tag is None or self.tag == other.tag) and
+            (other.nextWord1 is None or self.nextWord1 == other.nextWord1) and
+            (other.nextTag1 is None or self.nextTag1 == other.nextTag1) and
+            (other.nextWord2 is None or self.nextWord2 == other.nextWord2) and
+            (other.nextTag2 is None or self.nextTag2 == other.nextTag2) and
+            (other.suffixL2 is None or self.suffixL2 == other.suffixL2) and
+            (other.suffixL3 is None or self.suffixL3 == other.suffixL3) and
+            (other.suffixL4 is None or self.suffixL4 == other.suffixL4)
+        )
+
+    def set_key(self, key, value):
+        self.__dict__[key] = value
 
     @staticmethod
     def getFeatureVector(startWordTags, index):
         feature = FeatureVector(True)
         word, tag = startWordTags[index]
-        feature.context[4] = word
-        feature.context[5] = tag
+        feature.word = word
+        feature.tag = tag
 
-        decodedW = word
-        if len(decodedW) >= 4:
-            feature.context[10] = decodedW[-2:]
-            feature.context[11] = decodedW[-3:]
-        if len(decodedW) >= 5:
-            feature.context[12] = decodedW[-4:]
+        if len(word) >= 4:
+            feature.suffixL2 = word[-2:]
+            feature.suffixL3 = word[-3:]
+
+        if len(word) >= 5:
+            feature.suffixL4 = word[-4:]
 
         if index > 0:
-            preWord1, preTag1 = startWordTags[index - 1]
-            feature.context[2] = preWord1
-            feature.context[3] = preTag1
+            feature.prevWord1, feature.prevTag1 = startWordTags[index - 1]
 
         if index > 1:
-            preWord2, preTag2 = startWordTags[index - 2]
-            feature.context[0] = preWord2
-            feature.context[1] = preTag2
+            feature.prevWord2, feature.prevTag2 = startWordTags[index - 2]
 
         if index < len(startWordTags) - 1:
-            nextWord1, nextTag1 = startWordTags[index + 1]
-            feature.context[6] = nextWord1
-            feature.context[7] = nextTag1
+            feature.nextWord1, feature.nextTag1 = startWordTags[index + 1]
 
         if index < len(startWordTags) - 2:
-            nextWord2, nextTag2 = startWordTags[index + 2]
-            feature.context[8] = nextWord2
-            feature.context[9] = nextTag2
+            feature.nextWord2, feature.nextTag2 = startWordTags[index + 2]
 
         return feature
 
@@ -131,18 +146,11 @@ class SCRDRTree:
     def findFiredNode(self, feature):
         currentNode = self.root
         firedNode = None
-        obContext = feature.context
         while True:
             # Check whether object satisfying the current node's feature
-            cnContext = currentNode.feature.context
-            satisfied = True
-            for i in xrange(13):
-                if (cnContext[i] is not None):
-                    if cnContext[i] != obContext[i]:
-                        satisfied = False
-                        break
+            satisfied = feature.matches(currentNode.feature)
 
-            if(satisfied):
+            if satisfied:
                 firedNode = currentNode
                 exChild = currentNode.exceptChild
                 if exChild is None:
@@ -173,32 +181,6 @@ class SCRDRTree:
             rule = rule.strip()
             key = rule[rule.find(".") + 1: rule.find(" ")]
             value = self.getConcreteValue(rule)
-
-            if key == "prevWord2":
-                feature.context[0] = value
-            elif key == "prevTag2":
-                feature.context[1] = value
-            elif key == "prevWord1":
-                feature.context[2] = value
-            elif key == "prevTag1":
-                feature.context[3] = value
-            elif key == "word":
-                feature.context[4] = value
-            elif key == "tag":
-                feature.context[5] = value
-            elif key == "nextWord1":
-                feature.context[6] = value
-            elif key == "nextTag1":
-                feature.context[7] = value
-            elif key == "nextWord2":
-                feature.context[8] = value
-            elif key == "nextTag2":
-                feature.context[9] = value
-            elif key == "suffixL2":
-                feature.context[10] = value
-            elif key == "suffixL3":
-                feature.context[11] = value
-            elif key == "suffixL4":
-                feature.context[12] = value
+            feature.set_key(key, value)
 
         return feature
