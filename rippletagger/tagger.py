@@ -16,17 +16,15 @@ class Tagger(SCRDRTree):
 
     def tag(self, line):
         tagger = FrequencyTagger(self.DICT)
-        guessed_tags = tagger.tag(line)
-        sentence = []
+        tagged_sentence_initial = tagger.tag(line)
+        tagged_sentence = []
 
-        for i, guessed_tag in enumerate(guessed_tags):
-            feature = FeatureVector.getFeatureVector(guessed_tags, i)
+        for i, (word, tag) in enumerate(tagged_sentence_initial):
+            feature = FeatureVector.getFeatureVector(tagged_sentence_initial, i)
             node = self.findFiredNode(feature)
-            word, tag = guessed_tag
+            tagged_sentence.append((word, node.tag if node.depth > 0 else tag))
 
-            sentence.append((word, node.conclusion if node.depth > 0 else tag))
-
-        return sentence
+        return tagged_sentence
 
 class FrequencyTagger:
     def __init__(self, FREQDICT):

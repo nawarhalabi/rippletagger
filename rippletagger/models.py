@@ -64,9 +64,9 @@ class FeatureVector:
         self.__dict__[key] = value
 
     @staticmethod
-    def getFeatureVector(startWordTags, index):
+    def getFeatureVector(tagged_sentence, index):
         feature = FeatureVector(True)
-        word, tag = startWordTags[index]
+        word, tag = tagged_sentence[index]
         feature.word = word
         feature.tag = tag
 
@@ -78,16 +78,16 @@ class FeatureVector:
             feature.suffixL4 = word[-4:]
 
         if index > 0:
-            feature.prevWord1, feature.prevTag1 = startWordTags[index - 1]
+            feature.prevWord1, feature.prevTag1 = tagged_sentence[index - 1]
 
         if index > 1:
-            feature.prevWord2, feature.prevTag2 = startWordTags[index - 2]
+            feature.prevWord2, feature.prevTag2 = tagged_sentence[index - 2]
 
-        if index < len(startWordTags) - 1:
-            feature.nextWord1, feature.nextTag1 = startWordTags[index + 1]
+        if index < len(tagged_sentence) - 1:
+            feature.nextWord1, feature.nextTag1 = tagged_sentence[index + 1]
 
-        if index < len(startWordTags) - 2:
-            feature.nextWord2, feature.nextTag2 = startWordTags[index + 2]
+        if index < len(tagged_sentence) - 2:
+            feature.nextWord2, feature.nextTag2 = tagged_sentence[index + 2]
 
         return feature
 
