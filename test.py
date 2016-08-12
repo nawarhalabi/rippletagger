@@ -33,3 +33,5 @@ assert (
         (u'vardagslivet', 'NOUN')
     ]
 )
+
+print "Tests passed"
