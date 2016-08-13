@@ -23,6 +23,8 @@
 ]
 ```
 
+You can read about what the different tags mean at the [Universial Dependencies project](http://universaldependencies.org/u/pos/index.html).
+
 ## Why should you use RippleTagger?
 
 - It's fast.
