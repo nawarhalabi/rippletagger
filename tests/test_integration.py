@@ -22,7 +22,7 @@ class TestIntegration(unittest.TestCase):
         )
 
     def test_french(self):
-        tagger = Tagger(language="fr")
+        tagger = Tagger(language="fra-1")
         self.assertEqual(
             tagger.tag(u"Cette annonce a fait l' effet d' une véritable bombe ."),
             [
@@ -41,14 +41,29 @@ class TestIntegration(unittest.TestCase):
         )
 
     def test_swedish(self):
-        tagger = Tagger(language="sv")
+        tagger = Tagger(language="swedish")
         self.assertEqual(
             tagger.tag(u"Fördomen har alltid sin rot i vardagslivet"),
             [
                 (u'Fördomen', 'NOUN'),
-                (u'har', 'AUX'),
+                (u'har', 'VERB'),
                 (u'alltid', 'ADV'),
-                (u'sin', 'PRON'),
+                (u'sin', 'DET'),
+                (u'rot', 'NOUN'),
+                (u'i', 'ADP'),
+                (u'vardagslivet', 'NOUN'),
+            ]
+        )
+
+    def test_swedish_alternative(self):
+        tagger = Tagger(language="swedish-2")
+        self.assertEqual(
+            tagger.tag(u"Fördomen har alltid sin rot i vardagslivet"),
+            [
+                (u'Fördomen', 'NOUN'),
+                (u'har', 'AUX'),  # Wrong, but predicted using swedish-2
+                (u'alltid', 'ADV'),
+                (u'sin', 'PRON'),  # Wrong, but predicted using swedish-2
                 (u'rot', 'NOUN'),
                 (u'i', 'ADP'),
                 (u'vardagslivet', 'NOUN'),
