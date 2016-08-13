@@ -14,6 +14,8 @@ setup(
     url='https://github.com/EmilStenstrom/rippletagger/',
     download_url='https://github.com/EmilStenstrom/rippletagger/archive/%s.zip' % VERSION,
     install_requires=[],
+    tests_require=["nose>=1.3.7", "flake8>=3.0.4"],
+    test_suite="nose.collector",
     keywords=['pos-tagging', 'pos-tagger', 'multi-langauge', 'nlp', 'rippletagger'],
     classifiers=[
         "Programming Language :: Python",

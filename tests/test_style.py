@@ -1,8 +1,9 @@
 import unittest
 
-from flake8.engine import get_style_guide
+from flake8.api.legacy import get_style_guide
 
 class TestFlake8Compliance(unittest.TestCase):
     def test_flake8(self):
-        report = get_style_guide(parse_argv=True, paths=".").check_files()
-        self.assertEquals(report.get_state()["total_errors"], 0)
+        style_guide = get_style_guide()
+        report = style_guide.check_files()
+        self.assertEquals(report.get_statistics('E'), [])

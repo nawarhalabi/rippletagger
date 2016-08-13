@@ -26,6 +26,14 @@
 pip install rippletagger
 ```
 
+## Develop locally and run the tests
+
+```bash
+git clone git@github.com:EmilStenstrom/rippletagger.git
+cd rippletagger
+python setup.py test
+```
+
 ## Supported languages
 
 You can use either the 2-letter code, 3-letter code or language name as the parameter to Tagger.
