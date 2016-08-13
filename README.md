@@ -84,7 +84,7 @@ it | ita | italian | Italian | 96.48434167
 kk | kaz | kazakh | Kazakh | 79.22077922
 la | lat | latin | Latin | 90.39735099
 la-2 | lat-2 | latin-2 | Latin-ITTB | 98.24373855
-la-3 | lat-3 | latin | Latin-PROIEL | 95.78693144
+la-3 | lat-3 | latin-3 | Latin-PROIEL | 95.78693144
 lv | lav | latvian | Latvian | 86.34880803
 no | nor | norwegian | Norwegian | 94.60278351
 cu | chu | old_church_slavonic | Old_Church_Slavonic | 94.62492617
