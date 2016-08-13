@@ -115,12 +115,7 @@ The general architecture and experimental results of RDRPOSTagger can be found i
 
 - Dat Quoc Nguyen, Dai Quoc Nguyen, Dang Duc Pham and Son Bao Pham. [A Robust Transformation-Based Learning Approach Using Ripple Down Rules for Part-Of-Speech Tagging](http://content.iospress.com/articles/ai-communications/aic698). *AI Communications* (AICom), vol. 29, no. 3, pp. 409-422, 2016. [[.PDF]](http://arxiv.org/pdf/1412.4021.pdf) [[.bib]](http://rdrpostagger.sourceforge.net/AICom.bib)
 
-## Citations
+### Citations
 
 **Please cite** either the EACL or the AICom paper whenever RDRPOSTagger is used to produce published results or incorporated into other software.
-
-RDRPOSTagger is also available to download (10MB .zip file) at: [https://sourceforge.net/projects/rdrpostagger/files/RDRPOSTagger_v1.2.2.zip](https://sourceforge.net/projects/rdrpostagger/files/RDRPOSTagger_v1.2.2.zip)
-
-**Find the full usage of RDRPOSTagger at its website:** [http://rdrpostagger.sourceforge.net/](http://rdrpostagger.sourceforge.net/)
-
 
