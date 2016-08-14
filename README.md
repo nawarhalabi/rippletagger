@@ -27,11 +27,10 @@ You can read about what the different tags mean at the [Universial Dependencies 
 
 ## Why should you use RippleTagger?
 
-- It's fast.
-
-- It has good accuracy.
-
 - It supports 40 (!) languages out of the box.
+- It's fast.
+- It has good accuracy.
+- It has no dependences and is pure python.
 
 ## Installation
 
