@@ -9,17 +9,17 @@ from rippletagger.models import SCRDRTree, FeatureVector
 PACKAGE_PATH, _ = os.path.split(__file__)
 
 class Tagger(SCRDRTree):
-    def __init__(self, language):
+    def __init__(self, language, dataset="UD"):
         mapper = LanguageMapper()
         directory_name = mapper.directory_name(language)
-        data_path = os.path.join(PACKAGE_PATH, "data", "UD_%s" % directory_name, "train.UniPOS")
+        data_path = os.path.join(PACKAGE_PATH, "data", dataset + "_%s" % directory_name, "train")
 
         self.tree_from_file(data_path + ".RDR")
         self.word_to_tag_dict = self.dictionary_from_file(data_path + ".DICT")
 
-    def tag(self, line):
+    def tag(self, words):
         tagger = NaiveTagger(self.word_to_tag_dict)
-        tagged_sentence_initial = tagger.tag(line)
+        tagged_sentence_initial = tagger.tag(words)
 
         tagged_sentence = []
 
@@ -34,8 +34,7 @@ class NaiveTagger:
     def __init__(self, word_to_tag_dict):
         self.word_to_tag_dict = word_to_tag_dict
 
-    def tag(self, line):
-        words = line.strip().split()
+    def tag(self, words):
         tagged_sentence = []
         for word in words:
             if word in [u"“", u"”", u"\""]:

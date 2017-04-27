@@ -108,7 +108,7 @@ class SCRDRTree:
         rules_file = open(rules_file_path, "r", encoding="utf-8")
         lines = rules_file.readlines()
 
-        for i in xrange(1, len(lines)):
+        for i in range(1, len(lines)):
             line = lines[i]
             depth = 0
             for c in line:
